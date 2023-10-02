@@ -1,0 +1,12 @@
+bin
+.DS_Store
+obj
+publish_release
+node_modules
+.vscode
+public
+build
+.cache
+docs
+.yarn
+.next
