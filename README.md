@@ -5,6 +5,8 @@ This tool allows you to test Lucene regular expressions within the browser. It i
 - A .net WASM service that runs on the client side and utilizes [Lucene.net](https://lucenenet.apache.org/)
 - A Next.js project that integrates with the .net service
 
+This tool can be accessed [https://target.github.io/LUCkyRegex/](here).
+
 ## Dependencies
 
 - Node.js 18+
