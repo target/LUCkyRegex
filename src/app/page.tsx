@@ -71,7 +71,7 @@ export default function LuckyRegex() {
                 <Code>^</Code>) are not supported.
               </li>
               <li>
-                Character classes are not supported. Examples are{" "}
+                Certain character classes are not supported. Examples are{" "}
                 <Code>\d</Code>, <Code>\w</Code>, <Code>\s</Code> for digit,
                 word character, and whitespace, respectively.
               </li>
