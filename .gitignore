@@ -10,3 +10,4 @@ build
 docs
 .yarn
 .next
+next-env.d.ts
