@@ -2,7 +2,8 @@
   "name": "luckyregex",
   "version": "1.0.0",
   "scripts": {
-    "dev": "next dev",
+    "dev": "sh run.sh",
+    "next:dev": "next dev",
     "build": "next build",
     "lint": "next lint",
     "test": "vitest run"
