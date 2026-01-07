@@ -6,4 +6,5 @@ cd ../
 rm dotnet-service/bin/Release/net9.0/browser-wasm/AppBundle/index.html
 yarn run build
 cp -r dotnet-service/bin/Release/net9.0/browser-wasm/AppBundle/* ./docs
+cp -r dotnet-service/bin/Release/net9.0/browser-wasm/AppBundle/_framework/* ./docs
 touch ./docs/.nojekyll # The _ in _next causes issues with GH Pages
