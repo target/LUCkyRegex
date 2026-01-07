@@ -25,7 +25,7 @@ Download and install .NET 9 from [https://dotnet.microsoft.com/en-us/download/do
 ### Install necessary WASM tooling
 
 ```
-dotnet workload install wasm-tools-net-9
+dotnet workload install wasm-tools-net9
 dotnet workload install wasm-experimental
 ```
 
