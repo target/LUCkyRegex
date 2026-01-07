@@ -9,8 +9,8 @@ This tool can be accessed [here](https://target.github.io/LUCkyRegex/).
 
 ## Dependencies
 
-- Node.js 18+
-- .NET 7.
+- Node.js 24
+- .NET 9
 
 ## To run locally:
 
@@ -20,12 +20,12 @@ This tool can be accessed [here](https://target.github.io/LUCkyRegex/).
 
 ### Install .net tooling
 
-Download and install .NET 7 from [https://dotnet.microsoft.com/en-us/download](https://dotnet.microsoft.com/en-us/download)
+Download and install .NET 9 from [https://dotnet.microsoft.com/en-us/download/dotnet](https://dotnet.microsoft.com/en-us/download/dotnet)
 
 ### Install necessary WASM tooling
 
 ```
-dotnet workload install wasm-tools
+dotnet workload install wasm-tools-net
 dotnet workload install wasm-experimental
 ```
 

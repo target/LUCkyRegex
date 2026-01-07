@@ -1,13 +1,20 @@
-bin
-.DS_Store
-obj
-publish_release
-node_modules
-.vscode
+# project
 public
-build
-.cache
 docs
+
+# Tools
 .yarn
+node_modules
+
 .next
 next-env.d.ts
+
+dotnet-service/bin
+dotnet-service/obj
+
+# Editor
+.idea
+.vscode
+
+# Operating System
+.DS_Store

@@ -27,23 +27,25 @@ describe("app", () => {
     expect(screen.getByTestId("sample-string-input")).toBeDefined();
   });
   it('should display "match found" when there is a match', async () => {
+    const user = userEvent.setup();
     const regexInput = screen.getByTestId("regex-input");
     const sampleStringInput = screen.getByTestId("sample-string-input");
     if (!regexInput || !sampleStringInput) {
       throw new Error("Input elements do not exist");
     }
-    userEvent.type(regexInput, "/.*test.*/");
-    userEvent.type(sampleStringInput, "test");
+    await user.type(regexInput, "/.*test.*/");
+    await user.type(sampleStringInput, "test");
     await expect(screen.findByText("Match Found")).to.exist;
   });
   it('should display "match not found" when there is not a match', async () => {
+    const user = userEvent.setup();
     const regexInput = screen.getByTestId("regex-input");
     const sampleStringInput = screen.getByTestId("sample-string-input");
     if (!regexInput || !sampleStringInput) {
       throw new Error("Input elements do not exist");
     }
-    userEvent.type(regexInput, "/.*test.*/");
-    userEvent.type(sampleStringInput, "asdf");
+    await user.type(regexInput, "/.*test.*/");
+    await user.type(sampleStringInput, "asdf");
     await expect(screen.findByText("Match Not Found")).to.exist;
   });
 });
