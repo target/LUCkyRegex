@@ -30,7 +30,7 @@
     "eslint": "9.39.2",
     "eslint-config-next": "16.1.1",
     "jsdom": "27.4.0",
-    "vite": "7.3.0",
+    "vite": "7.3.2",
     "vitest": "4.0.16"
   },
   "packageManager": "yarn@4.12.0"
