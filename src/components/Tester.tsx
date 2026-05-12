@@ -1,5 +1,5 @@
 "use client";
-import * as React from "react";
+
 import {
   TextField,
   Typography,
@@ -11,9 +11,8 @@ import {
   Autocomplete,
   Chip,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import {useEffect, useState, type SyntheticEvent, FunctionComponent} from "react";
 import { CheckCircle, Error } from "@mui/icons-material";
-import styled from "styled-components";
 import { useSearchParams } from "next/navigation";
 
 const LUCENE_FLAGS = [
@@ -24,7 +23,7 @@ const LUCENE_FLAGS = [
   "ANYSTRING",
 ];
 
-export default function Tester() {
+const Tester:FunctionComponent = () => {
   const [regex, setRegex] = useState("");
   const [sampleString, setSampleString] = useState("");
   const [passing, setPassing] = useState(false);
@@ -37,12 +36,13 @@ export default function Tester() {
       parsedRegex = parsedRegex.substring(1, parsedRegex.length - 1);
     }
 
-    let parsedSampleString = lowercase
+    const parsedSampleString = lowercase
       ? sampleString.toLowerCase()
       : sampleString;
 
-    const timeout = setTimeout(async () => {
+    const timeout = setTimeout(() => {
       if (!window.testRegex) {
+        setPassing(false);
         return;
       }
       try {
@@ -71,61 +71,75 @@ export default function Tester() {
     if (regexParam) {
       setRegex(regexParam);
     }
-    const sampleString = searchParams.get("sampleString");
-    if (sampleString) {
-      setSampleString(sampleString);
+    const sampleStringParam = searchParams.get("sampleString");
+    if (sampleStringParam) {
+      setSampleString(sampleStringParam);
     }
-  }, [searchParams, setSampleString]);
+  }, [searchParams]);
 
   return (
     <>
-      <Box mb={2}>
+      <Box sx={{ mb: 2 }}>
         <Card>
           <CardContent>
             <Typography variant="h6">Your input</Typography>
-            <Box mt={2} mb={2}>
+            <Box sx={{ mt: 2, mb: 2 }}>
               <TextField
                 data-testid="regex-input"
                 variant="outlined"
-                fullWidth={true}
+                fullWidth
                 label="/Your regular expression/"
                 placeholder="/ab./"
                 value={regex}
                 onChange={(e) => setRegex(e.target.value)}
               />
             </Box>
-            <Box mb={2}>
+            <Box sx={{ mb: 2 }}>
               <TextField
                 data-testid="sample-string-input"
                 variant="outlined"
-                fullWidth={true}
+                fullWidth
                 label="Your test string"
                 placeholder="abc"
                 value={sampleString}
-                multiline={true}
+                multiline
                 rows={10}
                 onChange={(e) => setSampleString(e.target.value)}
               />
             </Box>
-            <MatchContainer>
+            <Box sx={{ minHeight: 24 }}>
               {regex && sampleString && (
                 <>
                   {passing ? (
-                    <MatchFound>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        color: "#00d406",
+                        "& svg": { mr: "10px" },
+                      }}
+                    >
                       <CheckCircle /> Match found
-                    </MatchFound>
+                    </Box>
                   ) : (
-                    <MatchNotFound>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        color: "#ff9f9f",
+                        "& svg": { mr: "10px" },
+                      }}
+                    >
                       <Error /> No match found
-                    </MatchNotFound>
+                    </Box>
                   )}
                 </>
               )}
-            </MatchContainer>
+            </Box>
           </CardContent>
         </Card>
       </Box>
-      <Box mb={2}>
+      <Box sx={{ mb: 2 }}>
         <Card>
           <CardContent>
             <Typography variant="h6">Advanced Settings</Typography>
@@ -138,15 +152,15 @@ export default function Tester() {
               }
               label="Lowercase regex and text"
             />
-            <Box mt={1} sx={{ m: 2, ml: 0 }}>
+            <Box sx={{ mt: 1, mr: 2, mb: 2 }}>
               <Autocomplete
                 id="autocomplete"
-                fullWidth={true}
+                fullWidth
                 sx={{ width: "100%" }}
                 value={flags}
                 options={LUCENE_FLAGS}
                 onChange={(
-                  _event: React.SyntheticEvent,
+                  _event: SyntheticEvent,
                   newFlags: string[]
                 ) => {
                   setFlags(newFlags);
@@ -154,28 +168,31 @@ export default function Tester() {
                 multiple
                 // https://stackoverflow.com/questions/75818761/material-ui-autocomplete-warning-a-props-object-containing-a-key-prop-is-be
                 renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    fullWidth={true}
-                    label="Lucene Flags"
-                  />
+                  <TextField {...params} fullWidth label="Lucene Flags" />
                 )}
                 renderOption={(props, option) => {
+                  const { key, ...optionProps } = props;
+
                   return (
-                    <li {...props} key={option}>
+                    <li {...optionProps} key={key}>
                       {option}
                     </li>
                   );
                 }}
-                renderTags={(tagValue, getTagProps) => {
-                  return tagValue.map((option, index) => (
-                    <Chip
-                      {...getTagProps({ index })}
-                      key={option}
-                      label={option}
-                    />
-                  ));
-                }}
+                renderValue={(value, getItemProps) =>
+                    value.map((option, index) => {
+                      const itemProps = getItemProps({ index });
+                      const { key, ...chipProps } = itemProps;
+
+                      return (
+                          <Chip
+                              {...chipProps}
+                              key={key ?? option}
+                              label={option}
+                          />
+                      );
+                    })
+                }
               />
             </Box>
           </CardContent>
@@ -183,26 +200,6 @@ export default function Tester() {
       </Box>
     </>
   );
-}
+};
 
-const MatchFound = styled.div`
-  display: flex;
-  align-items: center;
-  color: #00d406;
-  svg {
-    margin-right: 10px;
-  }
-`;
-
-const MatchNotFound = styled.div`
-  display: flex;
-  align-items: center;
-  color: #ff9f9f;
-  svg {
-    margin-right: 10px;
-  }
-`;
-
-const MatchContainer = styled.div`
-  min-height: 24px;
-`;
+export default Tester;

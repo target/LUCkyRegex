@@ -1,12 +1,12 @@
 "use client";
-import * as React from "react";
-import { Grid, LinearProgress, Link, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import Script from "next/script";
-import Tester from "../components/tester";
 
-export default function LuckyRegex() {
+import { Box, Grid, LinearProgress, Link, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import Script from "next/script";
+import {Code} from "../components/Code";
+import Tester from "../components/Tester";
+
+export default function RootPage() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -27,12 +27,22 @@ export default function LuckyRegex() {
       {/* <Script /> pulls in the .net WASM service.
       This prevents the built .net WASM assets from going through another build process,
       which unfortunately causes issues. */}
-      <Script type="module" src="./main.js" strategy="lazyOnload" />
-      <Header>
-        <Logo>LUCkyRegex</Logo>
-        <LogoSubtext>Lucene regular expression tester</LogoSubtext>
-      </Header>
-      <Contents>
+      <Script type="module" src="/main.js" strategy="lazyOnload" />
+      <Box component="header" sx={{ p: "15px 30px 30px 30px" }}>
+        <Typography
+          component="h1"
+          sx={{ mt: 0, mb: "5px", pb: 0, fontSize: "25px" }}
+        >
+          LUCkyRegex
+        </Typography>
+        <Typography
+          component="h2"
+          sx={{ fontSize: "13px", fontWeight: "normal", m: 0, p: 0 }}
+        >
+          Lucene regular expression tester
+        </Typography>
+      </Box>
+      <Box component="main" sx={{ p: "0 30px 30px 30px" }}>
         <Grid container spacing={5}>
           <Grid size={{ xs: 12, md: 6, lg: 8 }}>
             {ready ? <Tester /> : <LinearProgress />}
@@ -89,38 +99,7 @@ export default function LuckyRegex() {
             </Typography>
           </Grid>
         </Grid>
-      </Contents>
+      </Box>
     </>
   );
 }
-
-const Header = styled.div`
-  padding: 15px 30px 30px 30px;
-`;
-
-const Logo = styled.h1`
-  margin-top: 0;
-  margin-bottom: 5px;
-  padding-bottom: 0;
-  font-size: 25px;
-`;
-
-const LogoSubtext = styled.h2`
-  font-size: 13px;
-  font-weight: normal;
-  margin: 0;
-  padding: 0;
-`;
-
-const Contents = styled.main`
-  padding: 0 30px 30px 30px;
-`;
-
-const Code = styled.span`
-  font-family: Monospace;
-  background: #222;
-  padding: 5px;
-  display: inline-block;
-  vertical-align: middle;
-  line-height: 1;
-`;
