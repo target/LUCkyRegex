@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 import {FunctionComponent, PropsWithChildren} from "react";
