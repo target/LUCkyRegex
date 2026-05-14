@@ -1,24 +1,30 @@
-import {Metadata} from "next";
-import {PageContainer} from "../components/PageContainer";
-import {FunctionComponent, PropsWithChildren} from "react";
+import type { Metadata } from "next";
+import { FunctionComponent, PropsWithChildren } from "react";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { theme } from "@/theme";
 import Script from "next/script";
 
 export const metadata: Metadata = {
-    title: "LUCkyRegex - Lucene regular expression tester",
-    description:
-        "Use this regular expression tester to test your Lucene regular expressions.",
-    icons: ["./favicon.ico"],
+  title: "LUCkyRegex - Lucene regular expression tester",
+  description:
+    "Use this regular expression tester to test your Lucene regular expressions.",
 };
 
-const RootLayout: FunctionComponent<PropsWithChildren> = ({children}) => {
-    return (
-        <html>
-            <body>
-                <PageContainer>{children}</PageContainer>
-                <Script type="module" src="/main.js" strategy="afterInteractive" />
-            </body>
-        </html>
-    )
-}
+const RootLayout: FunctionComponent<PropsWithChildren> = ({ children }) => (
+  <html lang="en" suppressHydrationWarning>
+    <body>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
 
-export default RootLayout
+      <Script
+        type="module"
+        src="/LuceneNet/main.js"
+        strategy="afterInteractive"
+      />
+    </body>
+  </html>
+);
+
+export default RootLayout;
