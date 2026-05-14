@@ -12,7 +12,7 @@
     "build": "sh scripts/build.sh",
     "build:serve": "serve docs --single",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "eslint --fix",
     "format": "prettier src --write",
     "test": "vitest"
   },

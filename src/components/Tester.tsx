@@ -1,102 +1,76 @@
-"use client";
+'use client'
 
-import {
-  TextField,
-  Typography,
-  Box,
-  Card,
-  CardContent,
-  FormControlLabel,
-  Checkbox,
-  Autocomplete,
-  Chip,
-  LinearProgress,
-} from "@mui/material";
-import {
-  useEffect,
-  useState,
-  type SyntheticEvent,
-  FunctionComponent,
-} from "react";
-import { CheckCircle, Error } from "@mui/icons-material";
-import { useSearchParams } from "next/navigation";
+import type { FunctionComponent, SyntheticEvent } from 'react'
+import { CheckCircle, Error } from '@mui/icons-material'
+import { Autocomplete, Box, Card, CardContent, Checkbox, Chip, FormControlLabel, LinearProgress, TextField, Typography } from '@mui/material'
+import { useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
-const LUCENE_FLAGS = [
-  "COMPLEMENT",
-  "EMPTY",
-  "INTERVAL",
-  "INTERSECTION",
-  "ANYSTRING",
-];
+const LUCENE_FLAGS = ['COMPLEMENT', 'EMPTY', 'INTERVAL', 'INTERSECTION', 'ANYSTRING']
 
-const Tester: FunctionComponent = () => {
-  const [loaded, setLoaded] = useState(false);
-  const [regex, setRegex] = useState("");
+export const Tester: FunctionComponent = () => {
+  const [loaded, setLoaded] = useState(false)
+  const [regex, setRegex] = useState('')
 
-  const [sampleString, setSampleString] = useState("");
-  const [passing, setPassing] = useState(false);
-  const [lowercase, setLowercase] = useState(false);
-  const [flags, setFlags] = useState(LUCENE_FLAGS);
+  const [sampleString, setSampleString] = useState('')
+  const [passing, setPassing] = useState(false)
+  const [lowercase, setLowercase] = useState(false)
+  const [flags, setFlags] = useState(LUCENE_FLAGS)
 
   useEffect(() => {
-    setLoaded(window.luckyRegexReady ?? false);
+    setLoaded(window.luckyRegexReady ?? false)
     const handleReady = () => {
-      setLoaded(true);
-    };
-
-    document.addEventListener("luckyRegexReady", handleReady);
-
-    return () => {
-      document.removeEventListener("luckyRegexReady", handleReady);
-    };
-  }, []);
-
-  useEffect(() => {
-    let parsedRegex = lowercase ? regex.toLowerCase() : regex;
-    if (parsedRegex[0] === "/" && parsedRegex[parsedRegex.length - 1] === "/") {
-      parsedRegex = parsedRegex.substring(1, parsedRegex.length - 1);
+      setLoaded(true)
     }
 
-    const parsedSampleString = lowercase
-      ? sampleString.toLowerCase()
-      : sampleString;
+    document.addEventListener('luckyRegexReady', handleReady)
+
+    return () => {
+      document.removeEventListener('luckyRegexReady', handleReady)
+    }
+  }, [])
+
+  useEffect(() => {
+    let parsedRegex = lowercase ? regex.toLowerCase() : regex
+    if (parsedRegex[0] === '/' && parsedRegex[parsedRegex.length - 1] === '/') {
+      parsedRegex = parsedRegex.substring(1, parsedRegex.length - 1)
+    }
+
+    const parsedSampleString = lowercase ? sampleString.toLowerCase() : sampleString
 
     const timeout = setTimeout(() => {
       if (!window.testRegex) {
-        setPassing(false);
-        return;
+        setPassing(false)
+        return
       }
       try {
-        const res = window.testRegex(
-          parsedRegex,
-          parsedSampleString,
-          flags.length ? flags.join(",") : "NONE",
-        );
-        setPassing(res);
-      } catch (_err) {
-        setPassing(false);
+        const res = window.testRegex(parsedRegex, parsedSampleString, flags.length ? flags.join(',') : 'NONE')
+        setPassing(res)
       }
-    }, 250);
+      catch {
+        setPassing(false)
+      }
+    }, 250)
 
     return () => {
-      clearTimeout(timeout);
-    };
-  }, [regex, sampleString, lowercase, flags]);
+      clearTimeout(timeout)
+    }
+  }, [regex, sampleString, lowercase, flags])
 
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams()
   useEffect(() => {
     if (!searchParams) {
-      return;
+      return
     }
-    const regexParam = searchParams.get("regex");
+    const regexParam = searchParams.get('regex')
     if (regexParam) {
-      setRegex(regexParam);
+      setRegex(regexParam)
     }
-    const sampleStringParam = searchParams.get("sampleString");
+    const sampleStringParam = searchParams.get('sampleString')
     if (sampleStringParam) {
-      setSampleString(sampleStringParam);
+      setSampleString(sampleStringParam)
     }
-  }, [searchParams]);
+  }, [searchParams])
 
   return (
     <>
@@ -114,7 +88,7 @@ const Tester: FunctionComponent = () => {
                     label="/Your regular expression/"
                     placeholder="/ab./"
                     value={regex}
-                    onChange={(e) => setRegex(e.target.value)}
+                    onChange={e => setRegex(e.target.value)}
                   />
                 </Box>
                 <Box sx={{ mb: 2 }}>
@@ -126,37 +100,43 @@ const Tester: FunctionComponent = () => {
                     value={sampleString}
                     multiline
                     rows={10}
-                    onChange={(e) => setSampleString(e.target.value)}
+                    onChange={e => setSampleString(e.target.value)}
                   />
                 </Box>
                 <Box sx={{ minHeight: 24 }}>
                   {regex && sampleString && (
                     <>
-                      {passing ? (
-                        <Box
-                          role="status"
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            color: "#00d406",
-                            "& svg": { mr: "10px" },
-                          }}
-                        >
-                          <CheckCircle /> Match found
-                        </Box>
-                      ) : (
-                        <Box
-                          role="status"
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            color: "#ff9f9f",
-                            "& svg": { mr: "10px" },
-                          }}
-                        >
-                          <Error /> No match found
-                        </Box>
-                      )}
+                      {passing
+                        ? (
+                            <Box
+                              role="status"
+                              sx={{
+                                'display': 'flex',
+                                'alignItems': 'center',
+                                'color': '#00d406',
+                                '& svg': { mr: '10px' },
+                              }}
+                            >
+                              <CheckCircle />
+                              {' '}
+                              Match found
+                            </Box>
+                          )
+                        : (
+                            <Box
+                              role="status"
+                              sx={{
+                                'display': 'flex',
+                                'alignItems': 'center',
+                                'color': '#ff9f9f',
+                                '& svg': { mr: '10px' },
+                              }}
+                            >
+                              <Error />
+                              {' '}
+                              No match found
+                            </Box>
+                          )}
                     </>
                   )}
                 </Box>
@@ -168,52 +148,38 @@ const Tester: FunctionComponent = () => {
               <CardContent>
                 <Typography variant="h6">Advanced Settings</Typography>
                 <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={lowercase}
-                      onChange={(e) => setLowercase(e.target.checked)}
-                    />
-                  }
+                  control={<Checkbox checked={lowercase} onChange={e => setLowercase(e.target.checked)} />}
                   label="Lowercase regex and text"
                 />
                 <Box sx={{ mt: 1, mr: 2, mb: 2 }}>
                   <Autocomplete
                     id="autocomplete"
                     fullWidth
-                    sx={{ width: "100%" }}
+                    sx={{ width: '100%' }}
                     value={flags}
                     options={LUCENE_FLAGS}
                     onChange={(_event: SyntheticEvent, newFlags: string[]) => {
-                      setFlags(newFlags);
+                      setFlags(newFlags)
                     }}
                     multiple
                     // https://stackoverflow.com/questions/75818761/material-ui-autocomplete-warning-a-props-object-containing-a-key-prop-is-be
-                    renderInput={(params) => (
-                      <TextField {...params} fullWidth label="Lucene Flags" />
-                    )}
+                    renderInput={params => <TextField {...params} fullWidth label="Lucene Flags" />}
                     renderOption={(props, option) => {
-                      const { key, ...optionProps } = props;
+                      const { key, ...optionProps } = props
 
                       return (
                         <li {...optionProps} key={key}>
                           {option}
                         </li>
-                      );
+                      )
                     }}
                     renderValue={(value, getItemProps) =>
                       value.map((option, index) => {
-                        const itemProps = getItemProps({ index });
-                        const { key, ...chipProps } = itemProps;
+                        const itemProps = getItemProps({ index })
+                        const { key, ...chipProps } = itemProps
 
-                        return (
-                          <Chip
-                            {...chipProps}
-                            key={key ?? option}
-                            label={option}
-                          />
-                        );
-                      })
-                    }
+                        return <Chip {...chipProps} key={key ?? option} label={option} />
+                      })}
                   />
                 </Box>
               </CardContent>
@@ -222,7 +188,5 @@ const Tester: FunctionComponent = () => {
         </>
       )}
     </>
-  );
-};
-
-export default Tester;
+  )
+}

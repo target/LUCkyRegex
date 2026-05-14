@@ -1,4 +1,4 @@
 interface Window {
-  luckyRegexReady?: boolean;
-  testRegex?: (regex: string, text: string, flags: string) => boolean;
+  luckyRegexReady?: boolean
+  testRegex?: (regex: string, text: string, flags: string) => boolean
 }
