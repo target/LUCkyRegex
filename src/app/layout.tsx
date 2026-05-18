@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import type { FunctionComponent, PropsWithChildren } from 'react'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import Script from 'next/script'
-import { theme } from '@/theme'
+import { theme } from '../theme'
 
 export const metadata: Metadata = {
   title: 'LUCkyRegex - Lucene regular expression tester',
