@@ -1,51 +1,77 @@
-import { afterAll, beforeAll, expect, it, vi, describe } from "vitest";
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import App from "../app/page";
+import { cleanup, render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
+import App from '../app/page'
 
-describe("app", () => {
+describe('app', () => {
   beforeAll(() => {
     // Mocking out .net code
-    vi.stubGlobal("luckyRegexReady", true);
+    vi.stubGlobal('luckyRegexReady', true)
     vi.stubGlobal(
-      "testRegex",
-      vi.fn((regex, string) => new RegExp(regex).test(string))
-    );
-    render(<App />);
-  });
+      'testRegex',
+      vi.fn((regex, string) => new RegExp(regex).test(string)),
+    )
+  })
+
+  afterEach(() => {
+    cleanup()
+  })
+
   afterAll(() => {
-    vi.unstubAllGlobals();
-  });
-  it("should render", () => {
+    vi.unstubAllGlobals()
+  })
+
+  it('should render', async () => {
+    const container = render(<App />)
+
     expect(
-      screen.getByRole("heading", {
+      container.getByRole('heading', {
         level: 2,
         name: /Lucene regular expression tester/i,
-      })
-    ).toBeDefined();
-    expect(screen.getByTestId("regex-input")).toBeDefined();
-    expect(screen.getByTestId("sample-string-input")).toBeDefined();
-  });
+      }),
+    ).toBeDefined()
+
+    expect(container.getByRole('textbox', { name: /Your regular expression/ })).toBeDefined()
+    expect(container.getByRole('textbox', { name: /Your test string/ })).toBeDefined()
+  })
+
   it('should display "match found" when there is a match', async () => {
-    const user = userEvent.setup();
-    const regexInput = screen.getByTestId("regex-input");
-    const sampleStringInput = screen.getByTestId("sample-string-input");
-    if (!regexInput || !sampleStringInput) {
-      throw new Error("Input elements do not exist");
-    }
-    await user.type(regexInput, "/.*test.*/");
-    await user.type(sampleStringInput, "test");
-    await expect(screen.findByText("Match Found")).to.exist;
-  });
+    const container = render(<App />)
+    const regularExpressionInput = container.getByRole('textbox', {
+      name: /Your regular expression/,
+    })
+    const testTextTextArea = container.getByRole('textbox', {
+      name: /Your test string/,
+    })
+
+    const user = userEvent.setup()
+
+    await user.type(regularExpressionInput, '/.*test.*/')
+    await user.type(testTextTextArea, 'test')
+
+    await new Promise(resolve => setTimeout(resolve, 1000))
+
+    const status = await container.findByRole('status')
+    expect(status.textContent).toContain('Match found')
+  })
+
   it('should display "match not found" when there is not a match', async () => {
-    const user = userEvent.setup();
-    const regexInput = screen.getByTestId("regex-input");
-    const sampleStringInput = screen.getByTestId("sample-string-input");
-    if (!regexInput || !sampleStringInput) {
-      throw new Error("Input elements do not exist");
-    }
-    await user.type(regexInput, "/.*test.*/");
-    await user.type(sampleStringInput, "asdf");
-    await expect(screen.findByText("Match Not Found")).to.exist;
-  });
-});
+    const container = render(<App />)
+    const regularExpressionInput = container.getByRole('textbox', {
+      name: /Your regular expression/,
+    })
+    const testTextTextArea = container.getByRole('textbox', {
+      name: /Your test string/,
+    })
+
+    const user = userEvent.setup()
+
+    await user.type(regularExpressionInput, '/.*test.*/')
+    await user.type(testTextTextArea, 'asdf')
+
+    await new Promise(resolve => setTimeout(resolve, 1000))
+
+    const status = await container.findByRole('status')
+    expect(status.textContent).toContain('No match found')
+  })
+})
