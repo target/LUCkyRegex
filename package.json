@@ -14,7 +14,7 @@
     "start": "next start",
     "lint": "eslint --fix",
     "format": "prettier src --write",
-    "test": "vitest"
+    "test": "vitest --run"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
